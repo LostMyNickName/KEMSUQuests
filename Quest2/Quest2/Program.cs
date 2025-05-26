@@ -49,7 +49,7 @@ namespace Quest2
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Введите путь к файлу: ");
+			Console.WriteLine("Введите полный путь к файлу: ");
 			string InputPath = Console.ReadLine();
 			FileInfo fileinfo = new FileInfo(InputPath);
 			
