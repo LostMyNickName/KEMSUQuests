@@ -6,7 +6,7 @@ namespace Quest3
 
     class SquareMatrix
     {
-        public int ColsAndRows { get; set; }
+        //public int ColsAndRows { get; set; }
         public int[,] matrix;
 
         public SquareMatrix(int Cols)
@@ -239,21 +239,7 @@ namespace Quest3
             }
             return true;
         }
-        public override bool Equals(object obj)
-        {
-            return obj is SquareMatrix matrix &&
-                   ColsAndRows == matrix.ColsAndRows &&
-                   EqualityComparer<int[,]>.Default.Equals(this.matrix, matrix.matrix);
-        }
-
-        public override int GetHashCode()
-        {
-            int hashCode = -1064561338;
-            hashCode = hashCode * -1521134295 + ColsAndRows.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<int[,]>.Default.GetHashCode(matrix);
-            return hashCode;
-        }
-
+        
         public double[,] ConvertToDoubleArray(SquareMatrix matrix)
         {
             double[,] doublematrix = new double[matrix.matrix.GetLength(0), matrix.matrix.GetLength(0)];
@@ -287,6 +273,17 @@ namespace Quest3
             return output;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is SquareMatrix matrix &&
+                   EqualityComparer<int[,]>.Default.Equals(this.matrix, matrix.matrix);
+        }
+
+        public override int GetHashCode()
+        {
+            return -79939124 + EqualityComparer<int[,]>.Default.GetHashCode(matrix);
+        }
+
         //Я правда пытался
         //public double[,] GerMinor()
         //{
@@ -297,7 +294,7 @@ namespace Quest3
         //    return null;
         //}
 
-        
+
 
     }
 
@@ -306,7 +303,7 @@ namespace Quest3
         static int Main(string[] args)
         {
             Console.WriteLine("\tНУ ТИПА МАТРИЧНЫЙ КАЛЬКУЛЯТОР");
-            int ColsAndRows = 0;
+            int ColsAndRows=0;
             Console.Write("Введите количество строк и столбцов первой квадратной матрицы: ");
             try
             {
@@ -354,83 +351,99 @@ namespace Quest3
                 return 0;
             }
             Matrix2.getmatrix();
-
-            Console.WriteLine("Введите желаемое действие:\n" +
-                "1.Сложение матриц\n" +
-                "2.Вычитание матриц\n" +
-                "3.Умножение матриц\n" +
-                "4.Равны ли матрицы\n" +
-                "5.Какая матрица больше (среднее арифметическое элементов)\n" +
-                "6.Найти детерминанты матриц");
-
-            int choise = Convert.ToInt32(Console.ReadLine());
-
-            switch (choise)
+            do
             {
-                case 1:
-                    Console.WriteLine("Сумма матриц: ");
-                    SquareMatrix MatrixSum = Matrix1 + Matrix2;
-                    if (MatrixSum.matrix != null)
-                        MatrixSum.getmatrix();
-                    else
-                        Console.WriteLine("Для вычисления суммы матриц длина строк и столбцов должны быть равны");
-                    break;
+                Console.WriteLine("Введите желаемое действие:\n" +
+                    "1.Сложение матриц\n" +
+                    "2.Вычитание матриц\n" +
+                    "3.Умножение матриц\n" +
+                    "4.Равны ли матрицы\n" +
+                    "5.Какая матрица больше (среднее арифметическое элементов)\n" +
+                    "6.Найти детерминанты матриц\n" +
+                    "0.Выход");
 
-                case 2:
-                    Console.WriteLine("Разница матриц: ");
-                    SquareMatrix MatrixMinus = Matrix1 - Matrix2;
-                    if (MatrixMinus.matrix != null)
-                        MatrixMinus.getmatrix();
-                    else
-                        Console.WriteLine("Для вычисления разницы матриц длина строк и столбцов должны быть равны");
-                    break;
+                string rawchoise = Console.ReadLine();
+                int choise;
+                try
+                {
+                    choise = Convert.ToInt32(rawchoise);
+                }
+                catch (Exception e) {
+                    Console.WriteLine(e.Message);
+                    choise = -1;
+                }
+                   
+                switch (choise)
+                {
+                    case 1:
+                        Console.WriteLine("Сумма матриц: ");
+                        SquareMatrix MatrixSum = Matrix1 + Matrix2;
+                        if (MatrixSum.matrix != null)
+                            MatrixSum.getmatrix();
+                        else
+                            Console.WriteLine("Для вычисления суммы матриц длина строк и столбцов должны быть равны");
+                        break;
 
-                case 3:
-                    Console.WriteLine("Умножение матриц: ");
-                    SquareMatrix MatrixMultiplication = Matrix1 * Matrix2;
-                    if (MatrixMultiplication.matrix != null)
-                        MatrixMultiplication.getmatrix();
-                    else
-                        Console.WriteLine("Для вычисления произведения матриц длина строк и столбцов должны быть равны " +
-                            "(по крайней мере в случае с квадратными матрицами)");
-                    break;
+                    case 2:
+                        Console.WriteLine("Разница матриц: ");
+                        SquareMatrix MatrixMinus = Matrix1 - Matrix2;
+                        if (MatrixMinus.matrix != null)
+                            MatrixMinus.getmatrix();
+                        else
+                            Console.WriteLine("Для вычисления разницы матриц длина строк и столбцов должны быть равны");
+                        break;
 
-                case 4:
-                    if (Matrix1 == Matrix2)
-                    {
-                        Console.WriteLine("Матрицы равны");
-                    }
-                    if (Matrix1 != Matrix2)
-                    {
-                        Console.WriteLine("Матрицы НЕ равны");
-                    }
-                    break;
+                    case 3:
+                        Console.WriteLine("Умножение матриц: ");
+                        SquareMatrix MatrixMultiplication = Matrix1 * Matrix2;
+                        if (MatrixMultiplication.matrix != null)
+                            MatrixMultiplication.getmatrix();
+                        else
+                            Console.WriteLine("Для вычисления произведения матриц длина строк и столбцов должны быть равны " +
+                                "(по крайней мере в случае с квадратными матрицами)");
+                        break;
 
-                case 5:
-                    if (Matrix1 == Matrix2)
-                        Console.WriteLine("Матрицы равны");
-                    else if (Matrix1 > Matrix2)
-                        Console.WriteLine("Первая больше");
-                    else if (Matrix1 < Matrix2)
-                        Console.WriteLine("Вторая больше");
-                    else
-                        Console.WriteLine("БИПБУП ОШИБКА"); //Не, ну а вдруг
-                    break;
-                case 6:
-                    Console.WriteLine($"Определитель первой матрицы = {Matrix1.GetDeterminant(Matrix1)}\n" +
-                        $"Определитель второй матрицы = {Matrix2.GetDeterminant(Matrix2)}");                    
-                    break;
-                case 7:
-                    Console.WriteLine($"Первая матрица в строке:\n{Matrix1.ToString(Matrix1)}\n" +
-                        $"Вторая матрица в строке:\n{Matrix2.ToString(Matrix2)}");
-                    break;
+                    case 4:
+                        if (Matrix1 == Matrix2)
+                        {
+                            Console.WriteLine("Матрицы равны");
+                        }
+                        if (Matrix1 != Matrix2)
+                        {
+                            Console.WriteLine("Матрицы НЕ равны");
+                        }
+                        break;
 
-                default:
-                    Console.WriteLine("БИПБУП ОШИБКА!\nНет такого варианта");
-                    break;
-            }
+                    case 5:
+                        if (Matrix1 == Matrix2)
+                            Console.WriteLine("Матрицы равны");
+                        else if (Matrix1 > Matrix2)
+                            Console.WriteLine("Первая больше");
+                        else if (Matrix1 < Matrix2)
+                            Console.WriteLine("Вторая больше");
+                        else
+                            Console.WriteLine("БИПБУП ОШИБКА"); //Не, ну а вдруг
+                        break;
+                    case 6:
+                        Console.WriteLine($"Определитель первой матрицы = {Matrix1.GetDeterminant(Matrix1)}\n" +
+                            $"Определитель второй матрицы = {Matrix2.GetDeterminant(Matrix2)}");
+                        break;
+                    case 7:
+                        Console.WriteLine($"Первая матрица в строке:\n{Matrix1.ToString(Matrix1)}\n" +
+                            $"Вторая матрица в строке:\n{Matrix2.ToString(Matrix2)}");
+                        break;
+                    case 0:
+                        return 0;
 
-            return 0;
+                    default:
+                        Console.WriteLine("БИПБУП ОШИБКА!\nНет такого варианта");
+                        break;
+                }
+                Console.WriteLine("\nДля продолжения нажмите (почти) любую клавишу...");
+                Console.ReadKey(true);
+                Console.WriteLine();
+            } while (true);
+
         }
     }
 }
